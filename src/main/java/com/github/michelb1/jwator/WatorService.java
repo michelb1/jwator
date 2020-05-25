@@ -61,24 +61,23 @@ public class WatorService {
             //moving
             Integer newPos = calculatePosition(randNumber(1, 5), pos);
             if(watorMap.get(newPos) == null){
-                watorMap.remove(pos);
                 fishPositionsTemp.put(newPos, fish);
                 watorMap.put(newPos, fish);
+
+                //breeding
+                if(fish.getAge()>=fish.getBreedAge()){
+                    Fish newFish = new Fish();
+                    fishPositionsTemp.put(pos, newFish);
+                    watorMap.replace(pos, newFish);
+                    fish.setAge(0);
+                } else {
+                    watorMap.remove(pos);
+                }
             } else {
                 fishPositionsTemp.put(pos, fish);
             }
 
-            //breeding
-            if(fish.getAge()>=fish.getBreedAge()){
-                Integer newFishPos = calculatePosition(randNumber(1, 5), pos);
-                if(watorMap.get(newFishPos) == null){
-                    Fish newFish = new Fish();
-                    fishPositionsTemp.put(newFishPos, newFish);
-                    watorMap.put(newFishPos, newFish);
-                    fish.setAge(0);
-                }
 
-            }
         }
         fishPositions = fishPositionsTemp;
     }
