@@ -3,6 +3,7 @@ package com.github.michelb1.jwator;
 import java.util.HashMap;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,11 +16,14 @@ public class WatorService {
     private int scale = Config.SCALE;
     private int fieldCount = Config.HEIGHT*Config.WIDTH/(scale*scale);
 
+    @Autowired
+    private Config config;
+
     public void initData(){
         
-        watorMap = new HashMap<Integer,Entity>();
-        fishPositions = new HashMap<Integer,Entity>();
-        sharkPositions = new HashMap<Integer,Entity>();
+        watorMap = new HashMap<>();
+        fishPositions = new HashMap<>();
+        sharkPositions = new HashMap<>();
 
         initFishFields();
         initSharkFields();
@@ -27,9 +31,10 @@ public class WatorService {
 
     private void initFishFields() {
         int count = 0;
-        while(count < Config.CNT_FISH){
+        while(count < config.getCntFish())
+        {
             Integer pos = randNumber(0,fieldCount);
-            Fish fish = new Fish();
+            Fish fish = config.getContext().getBean(Fish.class);
 
             if(fishPositions.put(pos, fish)==null){
                 watorMap.put(pos, fish);
@@ -40,9 +45,10 @@ public class WatorService {
 
     private void initSharkFields() {
         int count = 0;
-        while(count < Config.CNT_SHARK){
+        while(count < config.getCntShark())
+        {
             Integer pos = randNumber(0,fieldCount);
-            Shark shark = new Shark();
+            Shark shark = config.getContext().getBean(Shark.class);
             
             if(fishPositions.get(pos)== null && sharkPositions.put(pos, shark)==null){
                 watorMap.put(pos, shark);
@@ -52,9 +58,9 @@ public class WatorService {
     }
 
     private void calculateFishActions(){
-        HashMap<Integer,Entity> fishPositionsTemp = new HashMap<Integer,Entity>();
+        HashMap<Integer,Entity> fishPositionsTemp = new HashMap<>();
 
-        for(Integer pos : fishPositions.keySet()){
+        fishPositions.keySet().forEach((pos) -> {
             Fish fish = (Fish)fishPositions.get(pos);
             fish.setAge(fish.getAge()+1);
 
@@ -66,7 +72,7 @@ public class WatorService {
 
                 //breeding
                 if(fish.getAge()>=fish.getBreedAge()){
-                    Fish newFish = new Fish();
+                    Fish newFish = config.getContext().getBean(Fish.class);
                     fishPositionsTemp.put(pos, newFish);
                     watorMap.replace(pos, newFish);
                     fish.setAge(0);
@@ -76,9 +82,7 @@ public class WatorService {
             } else {
                 fishPositionsTemp.put(pos, fish);
             }
-
-
-        }
+        });
         fishPositions = fishPositionsTemp;
     }
 
@@ -123,7 +127,7 @@ public class WatorService {
     }
 
     private void calculateSharkActions(){
-        HashMap<Integer,Entity> sharkPositionsTemp = new HashMap<Integer,Entity>();
+        HashMap<Integer,Entity> sharkPositionsTemp = new HashMap<>();
 
         for(Integer pos : sharkPositions.keySet()){
             Shark shark = (Shark)sharkPositions.get(pos);
@@ -162,7 +166,7 @@ public class WatorService {
 
                 if(watorMap.get(newSharkPos) == null){
                     int newEnergy = shark.getEnergy()/2;
-                    Shark newShark = new Shark();
+                    Shark newShark = config.getContext().getBean(Shark.class);
                     newShark.setEnergy(newEnergy);
                     shark.setEnergy(newEnergy);
                     sharkPositionsTemp.put(newSharkPos, newShark);
@@ -183,7 +187,7 @@ public class WatorService {
         Random r = new Random();
         int result = r.nextInt(high-low) + low;
 
-        return Integer.valueOf(result);
+        return result;
     }
 
     public HashMap<Integer,Entity> getWatorMap() {

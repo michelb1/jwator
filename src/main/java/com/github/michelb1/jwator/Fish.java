@@ -1,14 +1,21 @@
 package com.github.michelb1.jwator;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
 public class Fish implements Entity{
 
     private int breedAge;
     private int energy;
     private int age = 0;
 
-    public Fish() {
-        breedAge = Config.FISH_BREED;
-        energy = Config.FISH_ENERGY;
+    @Autowired
+    public Fish(Config config) {
+        breedAge = config.getFishBreed();
+        energy = config.getFishEnergy();
     }
 
     @Override
@@ -16,7 +23,8 @@ public class Fish implements Entity{
         return WatorType.FISH;
     }
 
-      public int getEnergy() {
+    @Override
+    public int getEnergy() {
         return this.energy;
     }
 

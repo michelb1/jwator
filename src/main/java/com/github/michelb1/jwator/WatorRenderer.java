@@ -25,7 +25,7 @@ public class WatorRenderer {
         int fieldnr = 0;
         while(y < Config.HEIGHT){
             while(x < Config.WIDTH){
-                Entity entity = map.get(Integer.valueOf(fieldnr));
+                Entity entity = map.get(fieldnr);
                 g2d.setColor(getColor(entity));
                 g2d.fillRect(x, y, Config.SCALE, Config.SCALE);
                 x+=Config.SCALE;

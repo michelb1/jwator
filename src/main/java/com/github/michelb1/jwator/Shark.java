@@ -1,13 +1,20 @@
 package com.github.michelb1.jwator;
 
-public class Shark implements Entity{
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
+public class Shark implements Entity {
 
     private int energy;
     private int breedEnergy;
 
-    public Shark() {
-        energy=Config.SHARK_ENERGY;
-        breedEnergy=Config.SHARK_BREED_ENERGY;
+    @Autowired
+    public Shark(Config config) {
+        energy=config.getSharkEnergy();
+        breedEnergy=config.getSharkBreedEnergy();
     }
 
 	@Override
@@ -15,6 +22,7 @@ public class Shark implements Entity{
 		return WatorType.SHARK;
 	}
 
+    @Override
     public int getEnergy() {
         return this.energy;
     }

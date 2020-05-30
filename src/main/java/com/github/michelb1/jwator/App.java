@@ -18,29 +18,36 @@ public class App
     private MainFrame mainFrame;
 
     @Autowired
+    private ConfigFrame configFrame;
+
+    @Autowired
     private WatorService wator;
 
-    private void startGui(){
-        EventQueue.invokeLater(new Runnable() {
+    @Autowired
+    private Config config;
 
-            @Override
-            public void run() {
-                mainFrame.initUI();
-                mainFrame.setVisible(true);
-            }
+    private void startConfigGui(){
+        EventQueue.invokeLater(() -> {
+            configFrame.initUI();
+            configFrame.setVisible(true);
+        });
+    }
+
+    private void startGui(){
+        EventQueue.invokeLater(() -> {
+            mainFrame.initUI();
+            mainFrame.setVisible(true);
         });
     }
 
     private void startUpdateTask(){
 
-        ActionListener task = new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                long startTime = System.nanoTime();
-                updateGui();       
-                updateData();
-                long elapsedTime = TimeUnit.MILLISECONDS.convert(System.nanoTime() - startTime, TimeUnit.NANOSECONDS);
-                mainFrame.updateBenchmark(elapsedTime);
-            }
+        ActionListener task = (ActionEvent evt) -> {
+            long startTime = System.nanoTime();
+            updateGui();
+            updateData();
+            long elapsedTime = TimeUnit.MILLISECONDS.convert(System.nanoTime() - startTime, TimeUnit.NANOSECONDS);
+            mainFrame.updateBenchmark(elapsedTime);
         };
         Timer timer = new Timer(Config.REFRESHRATE ,task);
         timer.setRepeats(true);
@@ -59,17 +66,19 @@ public class App
         mainFrame.update();
     }
 
-    public void init(){
+    public void init(ConfigurableApplicationContext context){
+
+        config.setContext(context);
+
         startGui();
+        startConfigGui();
+        
         initData();
         startUpdateTask();
     }
 
     public static void main(String[] args) {
-
-        try(ConfigurableApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfig.class);)
-        {
-            applicationContext.getBean(App.class).init();
-        }
+        ConfigurableApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfig.class);
+        applicationContext.getBean(App.class).init(applicationContext);
     }
 }

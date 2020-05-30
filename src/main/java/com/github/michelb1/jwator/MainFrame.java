@@ -1,5 +1,6 @@
 package com.github.michelb1.jwator;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ public class MainFrame extends JFrame{
         setSize(Config.WIDTH, Config.HEIGHT);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
     }
 
     public void update(){
