@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class Fish implements Entity{
+public class Fish implements Entity {
 
     private int breedAge;
     private int energy;

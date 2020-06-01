@@ -13,14 +13,14 @@ public class Shark implements Entity {
 
     @Autowired
     public Shark(Config config) {
-        energy=config.getSharkEnergy();
-        breedEnergy=config.getSharkBreedEnergy();
+        energy = config.getSharkEnergy();
+        breedEnergy = config.getSharkBreedEnergy();
     }
 
-	@Override
-	public WatorType getType() {
-		return WatorType.SHARK;
-	}
+    @Override
+    public WatorType getType() {
+        return WatorType.SHARK;
+    }
 
     @Override
     public int getEnergy() {
@@ -38,5 +38,5 @@ public class Shark implements Entity {
     public void setBreedEnergy(int breedEnergy) {
         this.breedEnergy = breedEnergy;
     }
-    
+
 }

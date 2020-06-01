@@ -4,13 +4,13 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Config{
+public class Config {
 
     public static final int WIDTH = 1024;
     public static final int HEIGHT = 768;
     public static final int REFRESHRATE = 50;
     public static final int SCALE = 4;
-    
+
     public static final int CNT_SHARK = 100;
     public static final int CNT_FISH = 200;
 
@@ -22,13 +22,12 @@ public class Config{
 
     private ConfigurableApplicationContext context;
 
-    private int cntShark=CNT_SHARK;
-    private int cntFish=CNT_FISH;
-    private int fishBreed=FISH_BREED;
-    private int fishEnergy=FISH_ENERGY;
-    private int sharkBreedEnergy=SHARK_BREED_ENERGY;
-    private int sharkEnergy=SHARK_ENERGY;
-
+    private int cntShark = CNT_SHARK;
+    private int cntFish = CNT_FISH;
+    private int fishBreed = FISH_BREED;
+    private int fishEnergy = FISH_ENERGY;
+    private int sharkBreedEnergy = SHARK_BREED_ENERGY;
+    private int sharkEnergy = SHARK_ENERGY;
 
     public ConfigurableApplicationContext getContext() {
         return this.context;
@@ -85,5 +84,5 @@ public class Config{
     public void setSharkEnergy(int sharkEnergy) {
         this.sharkEnergy = sharkEnergy;
     }
-    
+
 }
